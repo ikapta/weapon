@@ -9,7 +9,7 @@ const apps = [
   { brewName: 'google-chrome', appName: 'Google Chrome.app' },
   { brewName: 'lark', appName: 'Lark.app' },
   { brewName: 'visual-studio-code', appName: 'Visual Studio Code.app' },
-  { brewName: 'iterm2', appName: 'iTerm.app' },
+  // { brewName: 'iterm2', appName: 'iTerm.app' },
   { brewName: 'warp', appName: 'warp.app' },
   { brewName: 'figma', appName: 'Figma.app' },
   { brewName: 'postman', appName: 'Postman.app' },
