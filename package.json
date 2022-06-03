@@ -1,6 +1,6 @@
 {
   "name": "kta_weapon",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Boost your mac by weapon.",
   "type": "module",
   "main": "./src/cli.js",

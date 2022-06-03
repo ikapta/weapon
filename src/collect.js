@@ -40,7 +40,7 @@ export const logCollectInfo = () => {
     return set.size > 0 ? [...set].join(', ') : '<empty>'
   }
 
-  console.log(chalk.yellow('\n\n✨ The result for adorable you.\n'))
+  console.log(chalk.yellow('\n✨ The result for adorable you.\n'))
   console.info(`${chalk.cyan(' 1. installed (congrats!):')} ${checkNone(collect.getInstalled())}`)
   console.error(`${chalk.red(' 2. failed (oops~):')} ${checkNone(collect.getFailed())}`)
   console.warn(`${chalk.dim(' 3. skipped (already.):')} ${checkNone(collect.getSkipped())}`)

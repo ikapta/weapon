@@ -1,29 +1,14 @@
-import { $, question, chalk, quiet, which } from 'zx';
+import { question, chalk, which } from 'zx';
+import ora from 'ora';
 import { echo } from 'zx/experimental'
 import { default as pkg } from 'compare-versions';
 import { collect, logCollectInfo } from './collect.js';
-import { default as shell } from 'shelljs'
-import ora from 'ora';
+import { promisifyExec } from './utils.js'
 
-const oraInst = ora('installing...')
-
-const promisifyExec = async (cmd) => {
-  let resolve, reject
-  let promise = new Promise((...args) => ([resolve, reject] = args))
-
-  shell.exec(cmd, { silent: true }, (code, stdout, stderr) => {
-    if (code === 0) {
-      resolve(stdout)
-    } else {
-      reject(stderr)
-    }
-  })
-
-  return promise
-}
+const oraInst = ora('process misc...')
 
 async function reInstallGit() {
-  const { stdout } = await quiet($`git version`)
+  const { stdout } = await promisifyExec(`git version`)
 
   oraInst.stopAndPersist()
   const configNow = await question(`\n${chalk.yellowBright('Config your global git info now? The first install pls select: Y. (Y/n)?')}`, {
@@ -34,11 +19,11 @@ async function reInstallGit() {
     const yourEmail = await question('Your email: ')
 
     // for MacOS m1
-    await quiet($`git config --global core.compression 0`)
-    await quiet($`git config --global http.postBuffer 1048576000`)
+    await promisifyExec(`git config --global core.compression 0`)
+    await promisifyExec(`git config --global http.postBuffer 1048576000`)
 
-    await quiet($`git config --global user.name "${yourName}"`)
-    await quiet($`git config --global user.email "${yourEmail}"`)
+    await promisifyExec(`git config --global user.name "${yourName}"`)
+    await promisifyExec(`git config --global user.email "${yourEmail}"`)
   }
   oraInst.start()
 
@@ -47,7 +32,7 @@ async function reInstallGit() {
     return
   }
 
-  await quiet($`brew reinstall git`)
+  await promisifyExec(`brew reinstall git`)
 
   collect.setInstalled('git')
 }
@@ -99,7 +84,7 @@ async function installAutoJump() {
   }
 
   try {
-    await quiet($`brew install autojump`)
+    await promisifyExec(`brew install autojump`)
     collect.setInstalled('autojump')
   } catch (error) {
     collect.setFailed('autojump')
@@ -114,7 +99,7 @@ async function installVinciCli() {
   }
 
   try {
-    await quiet($`npm install -g vinci-cli --registry=https://npm.cew.io/`)
+    await promisifyExec(`npm install -g vinci-cli --registry=https://npm.cew.io/`)
     collect.setInstalled('vinci-cli')
   } catch (error) {
     collect.setFailed('vinci-cli')
@@ -129,7 +114,7 @@ async function installAg() {
   }
 
   try {
-    await quiet($`brew install silversearcher-ag`)
+    await promisifyExec(`brew install silversearcher-ag`)
     collect.setInstalled('silversearcher-ag')
   } catch (error) {
     collect.setFailed('silversearcher-ag')
@@ -228,7 +213,7 @@ misc.add({
 
 async function installMisc() {
   const candidates = [...misc]
-  oraInst.start('process misc...')
+  oraInst.start()
   while (candidates.length) {
     const item = candidates.shift()
     oraInst.start(`install ${item.name}...`)

@@ -1,6 +1,9 @@
-import { $, quiet, chalk } from 'zx'
-import { startSpinner } from 'zx/experimental'
+import { chalk } from 'zx'
 import { collect, logCollectInfo } from './collect.js'
+import ora from 'ora';
+import { promisifyExec } from './utils.js'
+
+const oraInst = ora('installing...')
 
 const apps = [
   { brewName: 'google-chrome', appName: 'Google Chrome.app' },
@@ -17,11 +20,11 @@ async function checkAppInstalledByBrew(app) {
   let installedByBrew = false
   let existedInApplicationDir = false
 
-  const { stdout: bst } = await quiet($`brew list --cask`)
+  const bst = await promisifyExec(`brew list --cask`)
   installedByBrew = (bst || '').includes(app.brewName)
 
   if (!installedByBrew) {
-    const { stdout: ast } = await quiet($`ls /Applications`)
+    const ast = await promisifyExec(`ls /Applications`)
     existedInApplicationDir = (ast || '').includes(app.appName)
   }
 
@@ -37,7 +40,7 @@ async function abInstall(app) {
 
   try {
     console.log(chalk.blue(`\ninstall ${app.appName}...`))
-    await $`brew install --cask ${app.brewName}`
+    await promisifyExec(`brew install --cask ${app.brewName}`)
     collect.setInstalled(app)
   } catch (error) {
     collect.setFailed(app.brewName)
@@ -45,13 +48,14 @@ async function abInstall(app) {
 }
 
 export async function installApps() {
-  let stop = startSpinner()
   while(apps.length) {
     const app = apps.shift()
+    oraInst.start(`install ${app.brewName}`)
 
     await abInstall(app)
+    oraInst.succeed('processed ' + app.brewName)
   }
-  stop()
+  oraInst.stop()
   logCollectInfo()
 }
 
