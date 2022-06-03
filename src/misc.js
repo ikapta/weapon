@@ -8,7 +8,7 @@ import { promisifyExec } from './utils.js'
 const oraInst = ora('process misc...')
 
 async function reInstallGit() {
-  const { stdout } = await promisifyExec(`git version`)
+  const ver = await promisifyExec(`git version`)
 
   oraInst.stopAndPersist()
   const configNow = await question(`\n${chalk.yellowBright('Config your global git info now? The first install pls select: Y. (Y/n)?')}`, {
@@ -27,7 +27,7 @@ async function reInstallGit() {
   }
   oraInst.start()
 
-  if (pkg.compare(stdout.slice(12, -1), '2.36.1', '>=')) {
+  if (pkg.compare(ver.slice(12, -1), '2.36.1', '>=')) {
     collect.setSkipped('git');
     return
   }
