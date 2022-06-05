@@ -1,8 +1,13 @@
 {
-  "name": "kta_weapon",
-  "version": "0.0.4",
-  "description": "Boost your mac by weapon.",
+  "name": "@kapta/weapon",
+  "version": "1.0.0",
+  "description": "Boot your mac with weapon.",
   "type": "module",
+  "homepage": "https://github.com/ikapta/weapon.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ikapta/weapon.git"
+  },
   "main": "./src/cli.js",
   "bin": {
     "weapon": "./src/cli.js"
