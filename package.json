@@ -1,6 +1,6 @@
 {
   "name": "@kapta/weapon",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "description": "Boot your mac with weapon.",
   "type": "module",
   "homepage": "https://github.com/ikapta/weapon.git",

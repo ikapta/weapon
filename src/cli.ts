@@ -5,7 +5,7 @@ import { installApps, listAllApps } from './app.js';
 import { misc, listAllMisc, installMisc, oneByOneByType } from './misc.js';
 import { chalk } from 'zx';
 
-program.name(pkg.name).version(pkg.version);
+program.name('weapon').version(pkg.version);
 
 program
   .command('list')
