@@ -74,29 +74,40 @@ async function installOhMyZsh() {
 
 async function addZshPlugins() {
   const std = await promisifyExec<string>(`test -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions && echo "yes, installed" || echo "no, not installed"`);
-  if (!std.includes('yes, installed')) {
+  if (std.includes('no, not installed')) {
     // install the plugin for zsh-autosuggestions
     echo`${chalk.blue('\nadd plugin zsh-autosuggestions...')}`;
-    await promisifyExec(
-      `git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions`
-    );
-    await promisifyExec(
-      `echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc`
-    );
+    try {
+      await promisifyExec(
+        `git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions`
+      );
+      await promisifyExec(
+        `echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc`
+      );
+    } catch(e) {
+      collect.setFailed('zsh-autosuggestions');
+    }
+  } else {
+    collect.setSkipped('zsh-autosuggestions');
   }
 
   const std2 = await promisifyExec<string>(`test -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting && echo "yes, installed" || echo "no, not installed"`);
-  if (!std2.includes('yes, installed')) {
+  if (std2.includes('no, not installed')) {
     // install the plugin for zsh-syntax-highlighting
     echo`${chalk.blue('\nadd plugin zsh-syntax-highlighting...')}`;
-    await promisifyExec(
-      `git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting`
-    );
-    await promisifyExec(
-      `echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc`
-    );
+    try {
+      await promisifyExec(
+        `git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting`
+      );
+      await promisifyExec(
+        `echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc`
+      );
+    } catch (error) {
+      collect.setFailed('zsh-syntax-highlighting');
+    }
+  } else {
+    collect.setSkipped('zsh-syntax-highlighting');
   }
-
 }
 
 async function installAutoJump() {
