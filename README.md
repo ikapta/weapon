@@ -1,6 +1,6 @@
 # weapon
 
-Tool for bootstrap your mac
+Tools for bootstrap your mac
 
 ## Usage
 
