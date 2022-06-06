@@ -85,7 +85,7 @@ async function addZshPlugins() {
     );
   }
 
-  const std2 = await promisifyExec<string>(`test -d ~/.zsh/zsh-syntax-highlighting && echo "yes, installed" || echo "no, not installed"`);
+  const std2 = await promisifyExec<string>(`test -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting && echo "yes, installed" || echo "no, not installed"`);
   if (!std2.includes('yes, installed')) {
     // install the plugin for zsh-syntax-highlighting
     echo`${chalk.blue('\nadd plugin zsh-syntax-highlighting...')}`;
