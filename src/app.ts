@@ -1,7 +1,7 @@
 import { chalk } from 'zx';
 import { collect, logCollectInfo } from './collect.js';
 import ora from 'ora';
-import { promisifyExec } from './utils.js';
+import { logIntoErrorFile, promisifyExec } from './utils.js';
 
 const oraInst = ora('installing...');
 
@@ -21,6 +21,7 @@ const apps: AppType[] = [
   { brewName: 'docker', appName: 'Docker.app' },
   { brewName: 'sogouinput', appName: 'Sougou Input.app' },
   { brewName: 'github', appName: 'GitHub Desktop.app' },
+  { brewName: 'wechat', appName: 'WeChat.app' },
 ];
 
 async function checkAppInstalledByBrew(app: AppType) {
@@ -51,6 +52,7 @@ async function abInstall(app: AppType) {
     collect.setInstalled(app.appName);
   } catch (error) {
     collect.setFailed(app.brewName);
+    await logIntoErrorFile(error as string);
   }
 }
 

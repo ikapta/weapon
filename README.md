@@ -15,3 +15,9 @@ weapon use app
 weapon use misc
 
 ```
+
+## Find install error info here
+
+```bash
+cat $HOME/Library/kapta_weapon/error.log
+```

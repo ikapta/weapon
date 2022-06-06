@@ -3,7 +3,7 @@ import ora from 'ora';
 import shell from 'shelljs';
 import { echo } from 'zx/experimental';
 import { collect, logCollectInfo } from './collect.js';
-import { promisifyExec } from './utils.js';
+import { logIntoErrorFile, promisifyExec } from './utils.js';
 
 const oraInst = ora('process misc...');
 
@@ -41,13 +41,13 @@ async function upgradeGit() {
     collect.setInstalled(`git(upgraded: ${v.replaceAll('\n', '')})`);
   } catch (error) {
     collect.setFailed('git');
+    await logIntoErrorFile(error as string);
   }
 }
 
 async function installOhMyZsh() {
   const installed = await whichInstalled('zsh');
   if (installed) {
-    collect.setSkipped('oh-my-zsh');
     return;
   }
 
@@ -71,6 +71,7 @@ async function installOhMyZsh() {
     collect.setInstalled('oh-my-zsh');
   } catch (error) {
     collect.setFailed('oh-my-zsh');
+    await logIntoErrorFile(error as string);
   }
 }
 
@@ -86,8 +87,9 @@ async function addZshPlugins() {
       await promisifyExec(
         `echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc`
       );
-    } catch(e) {
+    } catch(error) {
       collect.setFailed('zsh-autosuggestions');
+      await logIntoErrorFile(error as string);
     }
   } else {
     collect.setSkipped('zsh-autosuggestions');
@@ -106,6 +108,7 @@ async function addZshPlugins() {
       );
     } catch (error) {
       collect.setFailed('zsh-syntax-highlighting');
+      await logIntoErrorFile(error as string);
     }
   } else {
     collect.setSkipped('zsh-syntax-highlighting');
@@ -115,23 +118,23 @@ async function addZshPlugins() {
 async function installAutoJump() {
   const installed = await whichInstalled('autojump');
   if (installed) {
-    collect.setSkipped('autojump');
     return;
   }
 
   try {
     await promisifyExec(`brew install autojump`);
-    await promisifyExec(`echo "[ -f $(brew --prefix)/share/autojump/autojump.fish ]; and source $(brew --prefix)/share/autojump/autojump.fish" >> ~/.zshrc`);
+    await promisifyExec(`echo "# autojump\n[ -f $(brew --prefix)/share/autojump/autojump.zsh ] && source $(brew --prefix)/share/autojump/autojump.zsh" >> ~/.zshrc`);
+    await promisifyExec(`source ~/.zshrc`);
     collect.setInstalled('autojump');
   } catch (error) {
     collect.setFailed('autojump');
+    await logIntoErrorFile(error as string);
   }
 }
 
 async function installVinciCli() {
   const installed = await whichInstalled(`vinci`);
   if (installed) {
-    collect.setSkipped('vinci-cli');
     return;
   }
 
@@ -146,15 +149,15 @@ async function installVinciCli() {
 async function installAg() {
   const installed = await whichInstalled('ag');
   if (installed) {
-    collect.setSkipped('silversearcher-ag');
     return;
   }
 
   try {
-    await promisifyExec(`brew install silversearcher-ag`);
-    collect.setInstalled('silversearcher-ag');
+    await promisifyExec(`brew install the_silver_searcher`);
+    collect.setInstalled('the_silver_searcher');
   } catch (error) {
-    collect.setFailed('silversearcher-ag');
+    collect.setFailed('the_silver_searcher');
+    await logIntoErrorFile(error as string);
   }
 }
 
@@ -172,6 +175,7 @@ async function installNrm() {
     collect.setInstalled('nrm');
   } catch (error) {
     collect.setFailed('nrm');
+    await logIntoErrorFile(error as string);
   }
 }
 
@@ -186,6 +190,7 @@ async function installZx() {
     collect.setInstalled('zx');
   } catch (error) {
     collect.setFailed('zx');
+    await logIntoErrorFile(error as string);
   }
 }
 
@@ -241,7 +246,7 @@ misc.add({
 });
 
 misc.add({
-  name: 'silversearcher-ag',
+  name: 'the_silver_searcher',
   desc: 'search by ag like grep.',
   install: installAg,
 });

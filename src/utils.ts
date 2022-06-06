@@ -15,3 +15,10 @@ export const promisifyExec = async <T>(cmd: string) => {
 
   return promise;
 };
+
+export const logIntoErrorFile = async (content: string) => {
+  const logFilePath = `$HOME/Library/kapta_weapon`;
+  const logFullPath = `${logFilePath}/error.log`
+  await promisifyExec(`[ ! -f ${logFullPath} ] && mkdir -p ${logFilePath} && touch ${logFullPath}`);
+  await promisifyExec(`echo "${content}" > ${logFullPath}`);
+}
