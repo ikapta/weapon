@@ -13,14 +13,14 @@ async function reInstallGit() {
 
   oraInst.stopAndPersist();
   const configNow = await question(
-    `\n${chalk.yellowBright(
+    `\n${chalk.yellow(
       'Config your global git info now? The first install pls select: Y. (Y/n)?'
     )}`,
     {
       choices: ['Y', 'n'],
     }
   );
-  if (configNow === 'Y') {
+  if (['Y', 'y'].includes(configNow as string)) {
     const yourName = await question('Your name: ', { choices: [] });
     const yourEmail = await question('Your email: ', { choices: [] });
 
@@ -30,6 +30,7 @@ async function reInstallGit() {
 
     await promisifyExec(`git config --global user.name "${yourName}"`);
     await promisifyExec(`git config --global user.email "${yourEmail}"`);
+    await promisifyExec(`git config --global init.defaultBranch main`);
   }
   oraInst.start();
 
@@ -61,6 +62,7 @@ async function installOhMyZsh() {
 
     // set homebrew path
     await promisifyExec(`echo "export PATH=/opt/homebrew/bin:$PATH" >> ~/.zshrc`);
+
     // set git language
     await promisifyExec(`echo "alias git='LANG=en_GB git'" >> ~/.zshrc`);
 
@@ -128,7 +130,7 @@ async function installAutoJump() {
 async function installVinciCli() {
   const stdout = await which(`vinci`);
   if (stdout.includes('/bin/vinci')) {
-    collect.setSkipped('silversearcher-ag');
+    collect.setSkipped('vinci-cli');
     return;
   }
 
