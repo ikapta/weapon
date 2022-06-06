@@ -1,17 +1,15 @@
-import { question, chalk, which } from 'zx';
+import { question, chalk } from 'zx';
 import ora from 'ora';
-// @ts-ignore
+import shell from 'shelljs';
 import { echo } from 'zx/experimental';
-import { default as pkg } from 'compare-versions';
 import { collect, logCollectInfo } from './collect.js';
 import { promisifyExec } from './utils.js';
 
 const oraInst = ora('process misc...');
 
-async function reInstallGit() {
-  const ver = await promisifyExec<string>(`git version`);
-
+async function upgradeGit() {
   oraInst.stopAndPersist();
+
   const configNow = await question(
     `\n${chalk.yellow(
       'Config your global git info now? The first install pls select: Y. (Y/n)?'
@@ -20,6 +18,7 @@ async function reInstallGit() {
       choices: ['Y', 'n'],
     }
   );
+
   if (['Y', 'y'].includes(configNow as string)) {
     const yourName = await question('Your name: ', { choices: [] });
     const yourEmail = await question('Your email: ', { choices: [] });
@@ -32,21 +31,22 @@ async function reInstallGit() {
     await promisifyExec(`git config --global user.email "${yourEmail}"`);
     await promisifyExec(`git config --global init.defaultBranch main`);
   }
+
   oraInst.start();
 
-  if (pkg.compare(ver.slice(12, -1), '2.36.1', '>=')) {
-    collect.setSkipped('git');
-    return;
+  try {
+    // always upgrade git to latest version
+    await promisifyExec(`brew upgrade git`);
+    const v = await promisifyExec<string>(`git --version`);
+    collect.setInstalled(`git(upgraded: ${v.replaceAll('\n', '')})`);
+  } catch (error) {
+    collect.setFailed('git');
   }
-
-  await promisifyExec(`brew reinstall git`);
-
-  collect.setInstalled('git');
 }
 
 async function installOhMyZsh() {
-  const stdout = await which('zsh');
-  if (stdout.includes('/bin/zsh')) {
+  const installed = await whichInstalled('zsh');
+  if (installed) {
     collect.setSkipped('oh-my-zsh');
     return;
   }
@@ -121,6 +121,7 @@ async function installAutoJump() {
 
   try {
     await promisifyExec(`brew install autojump`);
+    await promisifyExec(`echo "[ -f $(brew --prefix)/share/autojump/autojump.fish ]; and source $(brew --prefix)/share/autojump/autojump.fish" >> ~/.zshrc`);
     collect.setInstalled('autojump');
   } catch (error) {
     collect.setFailed('autojump');
@@ -128,8 +129,8 @@ async function installAutoJump() {
 }
 
 async function installVinciCli() {
-  const stdout = await which(`vinci`);
-  if (stdout.includes('/bin/vinci')) {
+  const installed = await whichInstalled(`vinci`);
+  if (installed) {
     collect.setSkipped('vinci-cli');
     return;
   }
@@ -143,8 +144,8 @@ async function installVinciCli() {
 }
 
 async function installAg() {
-  const stdout = await which(`ag`);
-  if (stdout.includes('/bin/ag')) {
+  const installed = await whichInstalled('ag');
+  if (installed) {
     collect.setSkipped('silversearcher-ag');
     return;
   }
@@ -189,7 +190,7 @@ async function installZx() {
 }
 
 async function whichInstalled(shellName: string, appName?: string) {
-  const stdout = await which(shellName).catch(() => '');
+  const stdout = shell.which(shellName) || '';
 
   if (stdout.includes('/bin/' + shellName)) {
     collect.setSkipped(appName || shellName);
@@ -206,7 +207,7 @@ const misc = new Set<{
 misc.add({
   name: 'git',
   desc: 'reinstall git and set some global config.',
-  install: reInstallGit,
+  install: upgradeGit,
 });
 
 misc.add({

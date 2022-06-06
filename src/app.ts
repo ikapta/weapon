@@ -15,10 +15,12 @@ const apps: AppType[] = [
   { brewName: 'lark', appName: 'Lark.app' },
   { brewName: 'visual-studio-code', appName: 'Visual Studio Code.app' },
   // { brewName: 'iterm2', appName: 'iTerm.app' },
-  { brewName: 'warp', appName: 'warp.app' },
+  { brewName: 'warp', appName: 'Warp.app' },
   { brewName: 'figma', appName: 'Figma.app' },
   { brewName: 'postman', appName: 'Postman.app' },
   { brewName: 'docker', appName: 'Docker.app' },
+  { brewName: 'sogouinput', appName: 'Sougou Input.app' },
+  { brewName: 'github', appName: 'GitHub Desktop.app' },
 ];
 
 async function checkAppInstalledByBrew(app: AppType) {
