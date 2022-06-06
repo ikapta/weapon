@@ -19,6 +19,7 @@
   ],
   "license": "ISC",
   "scripts": {
+    "start": "tsc -w -p .",
     "fmt": "prettier --write .",
     "build": "tsc"
   },
@@ -37,6 +38,7 @@
     "@types/node": "^17.0",
     "@types/shelljs": "^0.8.11",
     "prettier": "^2.6.2",
+    "ts-node": "^10.8.1",
     "typescript": "^4.8.0-dev.20220605"
   }
 }

@@ -73,23 +73,30 @@ async function installOhMyZsh() {
 }
 
 async function addZshPlugins() {
-  // install the plugin for zsh-autosuggestions
-  echo`${chalk.blue('\nadd plugin zsh-autosuggestions...')}`;
-  await promisifyExec(
-    `git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions`
-  );
-  await promisifyExec(
-    `echo "source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc`
-  );
+  const std = await promisifyExec<string>(`test -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions && echo "yes, installed" || echo "no, not installed"`);
+  if (!std.includes('yes, installed')) {
+    // install the plugin for zsh-autosuggestions
+    echo`${chalk.blue('\nadd plugin zsh-autosuggestions...')}`;
+    await promisifyExec(
+      `git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions`
+    );
+    await promisifyExec(
+      `echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc`
+    );
+  }
 
-  // install the plugin for zsh-syntax-highlighting
-  echo`${chalk.blue('\nadd plugin zsh-syntax-highlighting...')}`;
-  await promisifyExec(
-    `git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting`
-  );
-  await promisifyExec(
-    `echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc`
-  );
+  const std2 = await promisifyExec<string>(`test -d ~/.zsh/zsh-syntax-highlighting && echo "yes, installed" || echo "no, not installed"`);
+  if (!std2.includes('yes, installed')) {
+    // install the plugin for zsh-syntax-highlighting
+    echo`${chalk.blue('\nadd plugin zsh-syntax-highlighting...')}`;
+    await promisifyExec(
+      `git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting`
+    );
+    await promisifyExec(
+      `echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc`
+    );
+  }
+
 }
 
 async function installAutoJump() {
