@@ -170,7 +170,7 @@ async function installNrm() {
   try {
     await promisifyExec(`npm install -g nrm`);
     await promisifyExec(`nrm add cew https://npm.cew.io/`);
-    await promisifyExec(`nrm use cew`);
+    await promisifyExec(`nrm use taobao`);
 
     collect.setInstalled('nrm');
   } catch (error) {
