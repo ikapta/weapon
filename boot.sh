@@ -7,7 +7,7 @@ source $(brew --prefix nvm)/nvm.sh
 
 nvm use node --lts
 
-npm i -g kta_weapon
+npm i -g @kapta/weapon
 
 echo "install weapon successed!"
 echo 'use weapon: <weapon use [type]>'
