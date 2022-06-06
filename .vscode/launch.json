@@ -8,9 +8,7 @@
       "name": "Install applications",
       "program": "${workspaceFolder}/src/cli.js",
       "request": "launch",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "type": "node",
       "args": ["app"]
     },
@@ -18,11 +16,9 @@
       "name": "Install shell",
       "program": "${workspaceFolder}/src/cli.js",
       "request": "launch",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "type": "node",
       "args": ["app"]
-    },
+    }
   ]
 }
