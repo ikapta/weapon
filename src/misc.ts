@@ -7,7 +7,7 @@ import { logIntoErrorFile, promisifyExec } from './utils.js';
 
 const oraInst = ora('process misc...');
 
-async function upgradeGit() {
+async function reinstallGit() {
   oraInst.stopAndPersist();
 
   const configNow = await question(
@@ -36,9 +36,9 @@ async function upgradeGit() {
 
   try {
     // always upgrade git to latest version
-    await promisifyExec(`brew upgrade git`);
+    await promisifyExec(`brew install git`);
     const v = await promisifyExec<string>(`git --version`);
-    collect.setInstalled(`git(upgraded: ${v.replaceAll('\n', '')})`);
+    collect.setInstalled(`git(${v.replaceAll('\n', '')})`);
   } catch (error) {
     collect.setFailed('git');
     await logIntoErrorFile(error as string);
@@ -212,7 +212,7 @@ const misc = new Set<{
 misc.add({
   name: 'git',
   desc: 'reinstall git and set some global config.',
-  install: upgradeGit,
+  install: reinstallGit,
 });
 
 misc.add({
