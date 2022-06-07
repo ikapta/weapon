@@ -9,7 +9,6 @@ else
     brew update
 fi
 
-# install node and node pkg manager
 brew install volta
 
 volta install node
