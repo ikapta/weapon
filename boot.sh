@@ -1,16 +1,13 @@
 #!/bin/sh
 
-brew install nvm
-mkdir -p ~/.nvm
-export NVM_DIR=~/.nvm
+brew install volta
 
-source $(brew --prefix nvm)/nvm.sh
+volta install node
 
-nvm install node --lts
+volta install @kapta/weapon
 
-npm i -g @kapta/weapon
+echo "weapon installed!"
 
-echo "install weapon successed!"
 echo 'use weapon: <weapon use [type]>'
 
 weapon
