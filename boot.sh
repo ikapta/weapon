@@ -5,7 +5,7 @@ mkdir ~/.nvm
 export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
 
-nvm use node --lts
+nvm install node --lts
 
 npm i -g @kapta/weapon
 
