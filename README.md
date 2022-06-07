@@ -5,6 +5,14 @@ Tools for bootstrap your mac
 1、use brew to install some useful tools. <https://brew.sh/>
 
 2、use volta to manage node versions. <https://volta.sh/>
+```
+# show all installed pkg
+volta list 
+
+# see global pkg path below command will all same
+npm get config prefix
+volta which <pkg name>
+```
 
 ## Usage
 
