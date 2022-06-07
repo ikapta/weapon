@@ -4,7 +4,7 @@ brew install volta
 
 volta install node
 
-npm install @kapta/weapon
+volta install @kapta/weapon
 
 echo "weapon installed!"
 
