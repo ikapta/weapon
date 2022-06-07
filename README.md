@@ -9,9 +9,6 @@ Tools for bootstrap your mac
 ## Usage
 
 ```sh
-# install brew first
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
 # use brew install volta, then install node and weapon
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ikapta/weapon/main/boot.sh)"
 
