@@ -9,7 +9,7 @@ Tools for bootstrap your mac
 # show all installed pkg
 volta list 
 
-# see global pkg path below command will all same
+# see global pkg path, below command exec will all same
 npm get config prefix
 volta which <pkg name>
 ```
@@ -17,7 +17,7 @@ volta which <pkg name>
 ## Usage
 
 ```sh
-# use brew install volta, then install node and weapon
+# u# install <brew \ volta \ node \ nrm \ weapon>
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ikapta/weapon/main/boot.sh)"
 
 # install apps chrome, lark...
@@ -29,6 +29,9 @@ weapon use misc
 # if you want switch node versions, use volta install node
 volta install node@16
 volta install node@18
+
+volta install pnpm
+volta install yarn
 ```
 
 ## Find install error info here
