@@ -2,10 +2,10 @@
 
 which -s brew
 if [[ $? != 0 ]] ; then
-    echo 'Install Homebrew...'
+    echo 'Installing Homebrew...'
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 else
-    echo 'Update brew...'
+    echo "Updating Homebrew..."
     brew update
 fi
 
