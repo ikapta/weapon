@@ -9,14 +9,18 @@ else
     brew update
 fi
 
+# install node and node pkg manager
 brew install volta
 
 volta install node
 
+# install npm package registry manage, and set alias to taobao
+volta install nrm
+nrm add tb "https://registry.npmmirror.com/"
+nrm use tb
+
 volta install @kapta/weapon
 
 echo "weapon installed!"
-
-echo 'use weapon: <weapon use [type]>'
 
 weapon
