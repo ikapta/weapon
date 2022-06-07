@@ -124,7 +124,7 @@ async function installAutoJump() {
   try {
     await promisifyExec(`brew install autojump`);
     await promisifyExec(`echo "# autojump\n[ -f $(brew --prefix)/share/autojump/autojump.zsh ] && source $(brew --prefix)/share/autojump/autojump.zsh" >> ~/.zshrc`);
-    await promisifyExec(`source ~/.zshrc`);
+    await promisifyExec(`source $HOME/.zshrc`);
     collect.setInstalled('autojump');
   } catch (error) {
     collect.setFailed('autojump');
@@ -251,11 +251,11 @@ misc.add({
   install: installAg,
 });
 
-misc.add({
-  name: 'vinci-cli',
-  desc: 'boot project with fe-template by `vinci list`.',
-  install: installVinciCli,
-});
+// misc.add({
+//   name: 'vinci-cli',
+//   desc: 'boot project with fe-template by `vinci list`.',
+//   install: installVinciCli,
+// });
 
 async function installMisc() {
   const candidates = [...misc];
