@@ -1,12 +1,17 @@
 # weapon
 
 Tools for bootstrap your mac
+
 1、use brew to install some useful tools. <https://brew.sh/>
+
 2、use volta to manage node versions. <https://volta.sh/>
 
 ## Usage
 
 ```sh
+# install brew first
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
 # use brew install volta, then install node and weapon
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ikapta/weapon/main/boot.sh)"
 
